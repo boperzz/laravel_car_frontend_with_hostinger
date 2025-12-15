@@ -86,6 +86,45 @@
                             </a>
                         </div>
                     </div>
+                    
+                    <!-- Profile Dropdown / Login Button -->
+                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <div id="auth-buttons">
+                            <!-- Not logged in -->
+                            <div id="not-logged-in" class="flex items-center space-x-3">
+                                <a href="login.html" class="border-2 border-black bg-transparent hover:bg-black text-black hover:text-white px-4 py-2 rounded-lg transition font-semibold">
+                                    <i class="fas fa-sign-in-alt mr-2"></i>Login
+                                </a>
+                                <a href="register.html" class="border-2 border-black bg-transparent hover:bg-black text-black hover:text-white px-4 py-2 rounded-lg transition font-semibold">
+                                    <i class="fas fa-user-plus mr-2"></i>Register
+                                </a>
+                            </div>
+                            <!-- Logged in -->
+                            <div id="logged-in" class="hidden relative" x-data="{ open: false }">
+                                <button @click="open = !open" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-4 font-medium rounded-lg text-slate-700 bg-white/50 hover:bg-white hover:text-slate-900 focus:outline-none transition ease-in-out duration-150 shadow-sm hover:shadow-md">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center mr-2">
+                                            <i class="fas fa-user text-white text-sm"></i>
+                                        </div>
+                                        <span id="user-name-nav">User</span>
+                                    </div>
+                                    <div class="ms-2">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                                <div x-show="open" @click.away="open = false" x-transition class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50">
+                                    <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-user-edit mr-2"></i> Profile
+                                    </a>
+                                    <a href="#" onclick="logout(); return false;" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-sign-out-alt mr-2"></i> Log Out
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -223,10 +262,6 @@
             return 'https://laravel-car.orbit-node.com/api';
         }
 
-        // Load dashboard data
-        $(document).ready(function() {
-            loadDashboardData();
-        });
 
         function loadDashboardData() {
             // Note: These endpoints would need to be created in the backend
@@ -379,6 +414,30 @@
             `;
             container.html(html);
         }
+
+        // Check authentication status
+        function checkAuth() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+            if (currentUser) {
+                $('#not-logged-in').addClass('hidden');
+                $('#logged-in').removeClass('hidden');
+                $('#user-name-nav').text(currentUser.name || currentUser.username || 'User');
+            } else {
+                $('#not-logged-in').removeClass('hidden');
+                $('#logged-in').addClass('hidden');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.reload();
+        }
+
+        // Check auth on page load
+        $(document).ready(function() {
+            loadDashboardData();
+            checkAuth();
+        });
     </script>
 </body>
 </html>
