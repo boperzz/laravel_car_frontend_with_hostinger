@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Car Maintenance Appointment</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            font-size: 1.3em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group label .required {
+            color: #e74c3c;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .service-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .service-card:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .service-card.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .service-card input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .service-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .service-price {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .service-duration {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .time-slot {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .time-slot:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .time-slot.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .time-slot.unavailable {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f5f5f5;
+        }
+
+        .summary-box {
+            background: #f8f9ff;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .summary-total {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+            border-top: 2px solid #667eea;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #667eea;
+        }
+
+        .loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #config {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+        }
+
+        #config label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        #config input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-car"></i> Car Maintenance Service</h1>
+            <p>Book your appointment online</p>
+        </div>
+
+        <div class="form-container">
+            <!-- API Configuration -->
+            <div id="config">
+                <label for="api-url">API Base URL:</label>
+                <input type="text" id="api-url" placeholder="https://your-domain.com/api" value="https://your-domain.com/api">
+                <small style="color: #666; display: block; margin-top: 5px;">
+                    Update this with your Hostinger backend URL (e.g., https://yourdomain.com/api)
+                </small>
+            </div>
+
+            <!-- Alert Messages -->
+            <div id="alert-container"></div>
+
+            <form id="appointment-form">
+                <!-- Customer Information Section -->
+                <div class="form-section">
+                    <h2><i class="fas fa-user"></i> Customer Information</h2>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Full Name <span class="required">*</span></label>
+                            <input type="text" id="customer_name" name="customer_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email <span class="required">*</span></label>
+                            <input type="email" id="customer_email" name="customer_email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="customer_phone" name="customer_phone">
+                    </div>
+                </div>
+
+                <!-- Vehicle Information Section -->
+                <div class="form-section">
+                    <h2><i class="fas fa-car-side"></i> Vehicle Information</h2>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Make <span class="required">*</span></label>
+                            <input type="text" id="vehicle_make" name="vehicle_make" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Model <span class="required">*</span></label>
+                            <input type="text" id="vehicle_model" name="vehicle_model" required>
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Year <span class="required">*</span></label>
+                            <input type="number" id="vehicle_year" name="vehicle_year" min="1900" max="2025" required>
+                        </div>
+                        <div class="form-group">
+                            <label>License Plate <span class="required">*</span></label>
+                            <input type="text" id="vehicle_license_plate" name="vehicle_license_plate" required>
+                        </div>
+                    </div>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>VIN (Optional)</label>
+                            <input type="text" id="vehicle_vin" name="vehicle_vin" maxlength="17">
+                        </div>
+                        <div class="form-group">
+                            <label>Color</label>
+                            <input type="text" id="vehicle_color" name="vehicle_color">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Mileage</label>
+                        <input type="number" id="vehicle_mileage" name="vehicle_mileage" min="0">
+                    </div>
+                </div>
+
+                <!-- Service Selection Section -->
+                <div class="form-section">
+                    <h2><i class="fas fa-wrench"></i> Select Services</h2>
+                    <div id="services-loading" class="loading">
+                        <i class="fas fa-spinner"></i> Loading services...
+                    </div>
+                    <div id="services-container" class="service-grid"></div>
+                </div>
+
+                <!-- Date & Time Selection Section -->
+                <div class="form-section">
+                    <h2><i class="fas fa-calendar-alt"></i> Appointment Date & Time</h2>
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Select Date <span class="required">*</span></label>
+                            <input type="date" id="appointment_date" name="appointment_date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Available Time Slots</label>
+                            <div id="time-slots-container">
+                                <p style="color: #666;">Select a date and services first</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes Section -->
+                <div class="form-section">
+                    <h2><i class="fas fa-sticky-note"></i> Additional Notes</h2>
+                    <div class="form-group">
+                        <label>Special Instructions or Concerns</label>
+                        <textarea id="notes" name="notes" placeholder="Any special instructions or concerns..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Summary Section -->
+                <div class="summary-box">
+                    <h3 style="margin-bottom: 15px;">Appointment Summary</h3>
+                    <div class="summary-row">
+                        <span>Selected Services:</span>
+                        <span id="summary-services">0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Estimated Duration:</span>
+                        <span id="summary-duration">0 minutes</span>
+                    </div>
+                    <div class="summary-row summary-total">
+                        <span>Total Price:</span>
+                        <span id="summary-total">$0.00</span>
+                    </div>
+                </div>
+
+                <!-- Submit Buttons -->
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
+                    <button type="submit" class="btn btn-primary" id="submit-btn">
+                        <i class="fas fa-calendar-check"></i> Book Appointment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let services = [];
+        let selectedServices = [];
+        let selectedDate = null;
+        let selectedTimeSlot = null;
+        let availableSlots = [];
+
+        // Configuration: API Base URL - Update this with your Hostinger backend URL
+        function getApiUrl() {
+            const url = document.getElementById('api-url').value.trim();
+            return url.endsWith('/') ? url.slice(0, -1) : url;
+        }
+
+        // Initialize on page load
+        $(document).ready(function() {
+            loadServices();
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            $('#appointment_date').on('change', function() {
+                selectedDate = $(this).val();
+                selectedTimeSlot = null;
+                if (selectedDate && selectedServices.length > 0) {
+                    loadAvailableSlots();
+                }
+            });
+
+            $('#appointment-form').on('submit', handleFormSubmit);
+        }
+
+        // Load services from API
+        function loadServices() {
+            const apiUrl = getApiUrl();
+            
+            $.ajax({
+                url: `${apiUrl}/public/services`,
+                method: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success && response.data) {
+                        services = response.data;
+                        renderServices();
+                        $('#services-loading').addClass('hidden');
+                    } else {
+                        showAlert('error', 'Failed to load services. Please try again.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading services:', error);
+                    showAlert('error', 'Failed to connect to the server. Please check your API URL configuration.');
+                    $('#services-loading').html('<p style="color: #e74c3c;">Error loading services. Please check API URL.</p>');
+                }
+            });
+        }
+
+        // Render services
+        function renderServices() {
+            const container = $('#services-container');
+            container.empty();
+
+            if (services.length === 0) {
+                container.html('<p>No services available at this time.</p>');
+                return;
+            }
+
+            services.forEach(service => {
+                const card = $(`
+                    <div class="service-card" data-service-id="${service.id}">
+                        <label style="cursor: pointer; display: flex; align-items: flex-start;">
+                            <input type="checkbox" value="${service.id}" style="width: auto; margin-right: 10px;">
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600; margin-bottom: 5px;">${service.name}</div>
+                                ${service.description ? `<div style="font-size: 0.9em; color: #666; margin-bottom: 10px;">${service.description}</div>` : ''}
+                                <div class="service-info">
+                                    <span class="service-price">$${parseFloat(service.price).toFixed(2)}</span>
+                                    <span class="service-duration">${service.duration_minutes} min</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                `);
+
+                card.find('input[type="checkbox"]').on('change', function() {
+                    toggleService(service.id, $(this).is(':checked'));
+                    card.toggleClass('selected', $(this).is(':checked'));
+                    updateSummary();
+                    if (selectedDate) {
+                        loadAvailableSlots();
+                    }
+                });
+
+                container.append(card);
+            });
+        }
+
+        // Toggle service selection
+        function toggleService(serviceId, isSelected) {
+            if (isSelected) {
+                if (!selectedServices.find(s => s.id === serviceId)) {
+                    selectedServices.push(services.find(s => s.id === serviceId));
+                }
+            } else {
+                selectedServices = selectedServices.filter(s => s.id !== serviceId);
+            }
+        }
+
+        // Load available time slots
+        function loadAvailableSlots() {
+            if (!selectedDate || selectedServices.length === 0) {
+                return;
+            }
+
+            const apiUrl = getApiUrl();
+            const serviceIds = selectedServices.map(s => s.id);
+
+            $('#time-slots-container').html('<div class="loading"><i class="fas fa-spinner"></i> Loading available slots...</div>');
+
+            $.ajax({
+                url: `${apiUrl}/public/available-slots`,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    date: selectedDate,
+                    service_ids: serviceIds
+                }),
+                success: function(response) {
+                    if (response.success && response.data) {
+                        availableSlots = response.data.slots || [];
+                        renderTimeSlots();
+                    } else {
+                        $('#time-slots-container').html('<p style="color: #e74c3c;">No available slots for this date.</p>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading slots:', error);
+                    let errorMsg = 'Failed to load available time slots.';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        errorMsg = xhr.responseJSON.message;
+                    }
+                    $('#time-slots-container').html(`<p style="color: #e74c3c;">${errorMsg}</p>`);
+                }
+            });
+        }
+
+        // Render time slots
+        function renderTimeSlots() {
+            const container = $('#time-slots-container');
+            container.empty();
+
+            if (availableSlots.length === 0) {
+                container.html('<p style="color: #e74c3c;">No available time slots for the selected date and services.</p>');
+                return;
+            }
+
+            availableSlots.forEach(slot => {
+                const slotDatetime = slot.datetime || slot.time;
+                // Extract time portion for display (HH:MM)
+                let timeStr = '';
+                if (slotDatetime.includes('T')) {
+                    timeStr = slotDatetime.split('T')[1].substring(0, 5);
+                } else if (slotDatetime.includes(' ')) {
+                    timeStr = slotDatetime.split(' ')[1].substring(0, 5);
+                } else {
+                    timeStr = slotDatetime.substring(0, 5);
+                }
+                
+                const slotBtn = $(`
+                    <div class="time-slot" data-time="${slotDatetime}">
+                        ${timeStr}
+                    </div>
+                `);
+
+                slotBtn.on('click', function() {
+                    $('.time-slot').removeClass('selected');
+                    $(this).addClass('selected');
+                    selectedTimeSlot = $(this).data('time');
+                    updateDateTimeInput();
+                });
+
+                container.append(slotBtn);
+            });
+        }
+
+        // Update datetime input with selected slot
+        function updateDateTimeInput() {
+            if (selectedDate && selectedTimeSlot) {
+                // Format datetime for API: YYYY-MM-DD HH:MM:SS
+                // The selectedTimeSlot is already in the correct format from the API
+            }
+        }
+
+        // Update summary
+        function updateSummary() {
+            let total = 0;
+            let totalDuration = 0;
+
+            selectedServices.forEach(service => {
+                total += parseFloat(service.price);
+                totalDuration += parseInt(service.duration_minutes);
+            });
+
+            $('#summary-services').text(selectedServices.length);
+            $('#summary-duration').text(`${totalDuration} minutes`);
+            $('#summary-total').text(`$${total.toFixed(2)}`);
+        }
+
+        // Handle form submit
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            if (selectedServices.length === 0) {
+                showAlert('error', 'Please select at least one service.');
+                return;
+            }
+
+            if (!selectedDate) {
+                showAlert('error', 'Please select an appointment date.');
+                return;
+            }
+
+            if (!selectedTimeSlot) {
+                showAlert('error', 'Please select an available time slot.');
+                return;
+            }
+
+            const formData = {
+                customer_name: $('#customer_name').val(),
+                customer_email: $('#customer_email').val(),
+                customer_phone: $('#customer_phone').val() || null,
+                vehicle_make: $('#vehicle_make').val(),
+                vehicle_model: $('#vehicle_model').val(),
+                vehicle_year: parseInt($('#vehicle_year').val()),
+                vehicle_license_plate: $('#vehicle_license_plate').val(),
+                vehicle_vin: $('#vehicle_vin').val() || null,
+                vehicle_color: $('#vehicle_color').val() || null,
+                vehicle_mileage: $('#vehicle_mileage').val() ? parseInt($('#vehicle_mileage').val()) : null,
+                appointment_date: selectedTimeSlot,
+                service_ids: selectedServices.map(s => s.id),
+                notes: $('#notes').val() || null
+            };
+
+            submitAppointment(formData);
+        }
+
+        // Submit appointment
+        function submitAppointment(data) {
+            const apiUrl = getApiUrl();
+            const submitBtn = $('#submit-btn');
+
+            submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Booking...');
+
+            $.ajax({
+                url: `${apiUrl}/public/appointments`,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response) {
+                    if (response.success) {
+                        showAlert('success', `Appointment booked successfully! Job Order #: ${response.data.job_order_number || response.data.appointment_id}`);
+                        resetForm();
+                    } else {
+                        showAlert('error', response.message || 'Failed to book appointment.');
+                        submitBtn.prop('disabled', false).html('<i class="fas fa-calendar-check"></i> Book Appointment');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    let errorMsg = 'Failed to book appointment. Please try again.';
+                    if (xhr.responseJSON) {
+                        if (xhr.responseJSON.message) {
+                            errorMsg = xhr.responseJSON.message;
+                        }
+                        if (xhr.responseJSON.errors) {
+                            const errors = Object.values(xhr.responseJSON.errors).flat();
+                            errorMsg = errors.join('<br>');
+                        }
+                    }
+                    showAlert('error', errorMsg);
+                    submitBtn.prop('disabled', false).html('<i class="fas fa-calendar-check"></i> Book Appointment');
+                }
+            });
+        }
+
+        // Show alert message
+        function showAlert(type, message) {
+            const alertHtml = `
+                <div class="alert alert-${type}">
+                    ${message}
+                </div>
+            `;
+            $('#alert-container').html(alertHtml);
+            
+            // Auto-hide after 5 seconds for success messages
+            if (type === 'success') {
+                setTimeout(() => {
+                    $('#alert-container').fadeOut();
+                }, 5000);
+            }
+
+            // Scroll to top to show alert
+            $('html, body').animate({ scrollTop: 0 }, 300);
+        }
+
+        // Reset form
+        function resetForm() {
+            $('#appointment-form')[0].reset();
+            selectedServices = [];
+            selectedDate = null;
+            selectedTimeSlot = null;
+            availableSlots = [];
+            $('.service-card').removeClass('selected');
+            $('.service-card input[type="checkbox"]').prop('checked', false);
+            $('#time-slots-container').html('<p style="color: #666;">Select a date and services first</p>');
+            updateSummary();
+        }
+    </script>
+</body>
+</html>
+
