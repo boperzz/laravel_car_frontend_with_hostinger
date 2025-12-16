@@ -236,7 +236,8 @@
                     <!-- Submit Button -->
                     <div>
                         <button 
-                            type="submit" 
+                            type="button" 
+                            onclick="redirectToPortalRegister()"
                             class="w-full border-2 border-black bg-transparent hover:bg-black text-black hover:text-white font-semibold py-3 px-4 rounded-lg transition duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                         >
                             <i class="fas fa-user-plus mr-2"></i>Create Account
@@ -248,7 +249,7 @@
                 <div class="mt-6 text-center">
                     <p class="text-sm text-gray-600">
                         Already have an account?
-                        <a href="login.html" class="text-blue-600 hover:text-blue-800 font-medium hover:underline">
+                        <a href="https://laravel-car.orbit-node.com/login" class="text-blue-600 hover:text-blue-800 font-medium hover:underline">
                             Sign in here
                         </a>
                     </p>
@@ -263,6 +264,10 @@
     </div>
 
     <script>
+        function getPortalBaseUrl() {
+            return 'https://laravel-car.orbit-node.com';
+        }
+
         function togglePassword(fieldId) {
             const passwordInput = document.getElementById(fieldId);
             const passwordToggle = document.getElementById(fieldId + '-toggle');
@@ -307,63 +312,13 @@
             $('[id$="-error"]').addClass('hidden').text('');
         }
 
-        // Handle form submission
-        $('#register-form').on('submit', function(e) {
-            e.preventDefault();
+        function redirectToPortalRegister() {
             clearErrors();
-            
-            const password = $('#password').val();
-            const passwordConfirmation = $('#password_confirmation').val();
-            
-            // Validation
-            if (password !== passwordConfirmation) {
-                $('#password_confirmation-error').removeClass('hidden').text('Passwords do not match.');
-                return;
-            }
-            
-            if (password.length < 8) {
-                $('#password-error').removeClass('hidden').text('Password must be at least 8 characters.');
-                return;
-            }
-            
-            // Note: This would require registration API endpoint
-            // For now, we'll save to localStorage
-            // In production, this would call: POST /api/register
-            
-            const userData = {
-                id: Date.now().toString(),
-                username: $('#username').val(),
-                name: $('#name').val(),
-                middle_name: $('#middle_name').val() || null,
-                last_name: $('#last_name').val(),
-                email: $('#email').val(),
-                password: password, // In production, this would be hashed on backend
-                profile_picture: null // File upload would be handled via FormData
-            };
-            
-            // Check if username or email already exists
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
-            if (users.find(u => u.username === userData.username)) {
-                $('#username-error').removeClass('hidden').text('Username already taken.');
-                return;
-            }
-            if (users.find(u => u.email === userData.email)) {
-                $('#email-error').removeClass('hidden').text('Email already registered.');
-                return;
-            }
-            
-            // Save user
-            users.push(userData);
-            localStorage.setItem('users', JSON.stringify(users));
-            
-            // Auto-login
-            localStorage.setItem('currentUser', JSON.stringify(userData));
-            
-            showAlert('success', 'Account created successfully! Redirecting...');
+            showAlert('success', 'Redirecting to secure registration...');
             setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 1000);
-        });
+                window.location.href = `${getPortalBaseUrl()}/register`;
+            }, 300);
+        }
     </script>
 </body>
 </html>

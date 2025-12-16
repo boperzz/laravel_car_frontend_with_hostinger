@@ -75,14 +75,22 @@
                         
                         <!-- Navigation Links -->
                         <div class="hidden space-x-2 sm:-my-px sm:ms-10 sm:flex">
-                            <a href="index.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">
-                                <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+                            <a href="booking.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">
+                                <i class="fas fa-calendar-plus mr-2"></i> Book Appointment
                             </a>
-                            <a href="vehicles.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">
-                                <i class="fas fa-car mr-2"></i> My Vehicles
+                            <a href="https://laravel-car.orbit-node.com/dashboard" class="inline-flex items-center px-1 pt-1 border-b-2 border-indigo-500 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition">
+                                <i class="fas fa-tachometer-alt mr-2"></i> Customer Portal
                             </a>
-                            <a href="appointments.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-indigo-500 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition">
-                                <i class="fas fa-calendar mr-2"></i> Appointments
+                        </div>
+                    </div>
+
+                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <div class="flex items-center space-x-3">
+                            <a href="https://laravel-car.orbit-node.com/login" class="border-2 border-black bg-transparent hover:bg-black text-black hover:text-white px-4 py-2 rounded-lg transition font-semibold">
+                                <i class="fas fa-sign-in-alt mr-2"></i>Login
+                            </a>
+                            <a href="https://laravel-car.orbit-node.com/register" class="border-2 border-black bg-transparent hover:bg-black text-black hover:text-white px-4 py-2 rounded-lg transition font-semibold">
+                                <i class="fas fa-user-plus mr-2"></i>Register
                             </a>
                         </div>
                     </div>
@@ -100,8 +108,8 @@
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                         <i class="fas fa-calendar mr-2"></i>My Appointments
                     </h2>
-                    <a href="booking.html" class="border-2 border-black bg-transparent hover:bg-black text-black hover:text-white px-4 py-2 rounded-lg transition font-semibold">
-                        <i class="fas fa-plus mr-2"></i>Book Appointment
+                    <a href="https://laravel-car.orbit-node.com/customer/appointments" class="border-2 border-black bg-transparent hover:bg-black text-black hover:text-white px-4 py-2 rounded-lg transition font-semibold">
+                        <i class="fas fa-arrow-right mr-2"></i>Open Portal
                     </a>
                 </div>
             </div>
@@ -122,9 +130,9 @@
                     <div id="appointments-empty" class="hidden bg-white rounded-lg shadow p-12 text-center">
                         <i class="fas fa-calendar-times text-6xl text-gray-300 mb-4"></i>
                         <h3 class="text-xl font-semibold text-gray-700 mb-2">No Appointments Yet</h3>
-                        <p class="text-gray-500 mb-6">Book your first maintenance appointment.</p>
-                        <a href="booking.html" class="inline-block border-2 border-black bg-transparent hover:bg-black text-black hover:text-white px-6 py-3 rounded-lg transition font-semibold">
-                            <i class="fas fa-calendar-plus mr-2"></i>Book Your First Appointment
+                        <p class="text-gray-500 mb-6">Appointments are available in the secure Customer Portal.</p>
+                        <a href="https://laravel-car.orbit-node.com/customer/appointments" class="inline-block border-2 border-black bg-transparent hover:bg-black text-black hover:text-white px-6 py-3 rounded-lg transition font-semibold">
+                            <i class="fas fa-arrow-right mr-2"></i>Open Customer Portal
                         </a>
                     </div>
                 </div>
@@ -133,6 +141,10 @@
     </div>
 
     <script>
+        function getPortalBaseUrl() {
+            return 'https://laravel-car.orbit-node.com';
+        }
+
         // Configuration: API Base URL
         function getApiUrl() {
             return 'https://laravel-car.orbit-node.com/api';
@@ -140,118 +152,42 @@
 
         // Load appointments on page load
         $(document).ready(function() {
-            loadAppointments();
+            redirectToPortalAppointments();
         });
 
-        function loadAppointments() {
-            // Note: This would require a public API endpoint to be created
-            // For now, we'll load from localStorage (data saved from booking)
-            const storedAppointments = localStorage.getItem('appointments');
-            
+        function redirectToPortalAppointments() {
             $('#appointments-loading').hide();
-            
-            if (storedAppointments) {
-                try {
-                    const appointments = JSON.parse(storedAppointments);
-                    if (appointments.length > 0) {
-                        renderAppointments(appointments);
-                        $('#appointments-container').removeClass('hidden');
-                    } else {
-                        $('#appointments-empty').removeClass('hidden');
-                    }
-                } catch(e) {
-                    console.error('Error parsing appointments:', e);
-                    $('#appointments-empty').removeClass('hidden');
-                }
-            } else {
-                $('#appointments-empty').removeClass('hidden');
-            }
+            $('#appointments-empty').removeClass('hidden');
+            showAlert('success', 'Redirecting to Customer Portal...');
+            setTimeout(() => {
+                window.location.href = `${getPortalBaseUrl()}/customer/appointments`;
+            }, 300);
         }
 
-        function renderAppointments(appointments) {
-            let html = `
-                <div class="bg-white rounded-lg shadow overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vehicle</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Services</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-            `;
+        function showAlert(type, message) {
+            const alertClass = type === 'success'
+                ? 'bg-green-50 border-l-4 border-green-500 text-green-700'
+                : 'bg-red-50 border-l-4 border-red-500 text-red-700';
             
-            // Sort appointments by date (newest first)
-            appointments.sort((a, b) => new Date(b.appointment_date) - new Date(a.appointment_date));
+            const icon = type === 'success'
+                ? '<i class="fas fa-check-circle mr-3 text-xl"></i>'
+                : '<i class="fas fa-exclamation-circle mr-3 text-xl"></i>';
             
-            appointments.forEach(appointment => {
-                const date = new Date(appointment.appointment_date);
-                const statusClass = {
-                    'pending': 'bg-yellow-100 text-yellow-800',
-                    'confirmed': 'bg-blue-100 text-blue-800',
-                    'in_progress': 'bg-purple-100 text-purple-800',
-                    'completed': 'bg-green-100 text-green-800',
-                    'cancelled': 'bg-red-100 text-red-800'
-                }[appointment.status] || 'bg-gray-100 text-gray-800';
-                
-                const statusText = appointment.status ? appointment.status.charAt(0).toUpperCase() + appointment.status.slice(1).replace('_', ' ') : 'Pending';
-                const totalPrice = appointment.total_price || (appointment.services ? appointment.services.reduce((sum, s) => sum + parseFloat(s.price || 0), 0) : 0);
-                
-                html += `
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">
-                                ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                            </div>
-                            <div class="text-sm text-gray-500">
-                                ${date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">${appointment.vehicle_make} ${appointment.vehicle_model}</div>
-                            <div class="text-sm text-gray-500">${appointment.vehicle_license_plate}</div>
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="text-sm text-gray-900">
-                                ${appointment.services ? appointment.services.map(s => s.name).join(', ') : 'Services'}
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 py-1 text-xs font-semibold rounded-full ${statusClass}">
-                                ${statusText}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            $${totalPrice.toFixed(2)}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <button onclick="viewAppointment('${appointment.id || appointment.job_order_number}')" class="border-2 border-black bg-transparent hover:bg-black text-black hover:text-white px-3 py-1 rounded transition text-sm font-medium mr-2">
-                                <i class="fas fa-eye mr-1"></i>View
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-            
-            html += `
-                            </tbody>
-                        </table>
+            const alertHtml = `
+                <div class="${alertClass} p-4 rounded-lg shadow-md animate-fade-in-up" role="alert">
+                    <div class="flex items-center">
+                        ${icon}
+                        <div class="flex-1">
+                            <p class="font-semibold">${message}</p>
+                        </div>
+                        <button onclick="this.parentElement.parentElement.remove()" class="ml-auto ${type === 'success' ? 'text-green-700 hover:text-green-900' : 'text-red-700 hover:text-red-900'}">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
                 </div>
             `;
-            
-            $('#appointments-container').html(html);
-        }
 
-        function viewAppointment(id) {
-            // Note: This would open a detail view or modal
-            // For now, just show an alert
-            alert('Appointment details view - Coming soon!\nJob Order: ' + id);
+            $('#alert-container').stop(true, true).show().html(alertHtml);
         }
     </script>
 </body>

@@ -75,54 +75,24 @@
                         
                         <!-- Navigation Links -->
                         <div class="hidden space-x-2 sm:-my-px sm:ms-10 sm:flex">
-                            <a href="index.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-indigo-500 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition">
-                                <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+                            <a href="booking.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-indigo-500 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition">
+                                <i class="fas fa-calendar-plus mr-2"></i> Book Appointment
                             </a>
-                            <a href="vehicles.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">
-                                <i class="fas fa-car mr-2"></i> My Vehicles
-                            </a>
-                            <a href="appointments.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">
-                                <i class="fas fa-calendar mr-2"></i> Appointments
+                            <a href="https://laravel-car.orbit-node.com/dashboard" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition">
+                                <i class="fas fa-tachometer-alt mr-2"></i> Customer Portal
                             </a>
                         </div>
                     </div>
                     
                     <!-- Profile Dropdown / Login Button -->
                     <div class="hidden sm:flex sm:items-center sm:ms-6">
-                        <div id="auth-buttons">
-                            <!-- Not logged in -->
-                            <div id="not-logged-in" class="flex items-center space-x-3">
-                                <a href="login.html" class="border-2 border-black bg-transparent hover:bg-black text-black hover:text-white px-4 py-2 rounded-lg transition font-semibold">
-                                    <i class="fas fa-sign-in-alt mr-2"></i>Login
-                                </a>
-                                <a href="register.html" class="border-2 border-black bg-transparent hover:bg-black text-black hover:text-white px-4 py-2 rounded-lg transition font-semibold">
-                                    <i class="fas fa-user-plus mr-2"></i>Register
-                                </a>
-                            </div>
-                            <!-- Logged in -->
-                            <div id="logged-in" class="hidden relative" x-data="{ open: false }">
-                                <button @click="open = !open" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-4 font-medium rounded-lg text-slate-700 bg-white/50 hover:bg-white hover:text-slate-900 focus:outline-none transition ease-in-out duration-150 shadow-sm hover:shadow-md">
-                                    <div class="flex items-center">
-                                        <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-full flex items-center justify-center mr-2">
-                                            <i class="fas fa-user text-white text-sm"></i>
-                                        </div>
-                                        <span id="user-name-nav">User</span>
-                                    </div>
-                                    <div class="ms-2">
-                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </button>
-                                <div x-show="open" @click.away="open = false" x-transition class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50">
-                                    <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        <i class="fas fa-user-edit mr-2"></i> Profile
-                                    </a>
-                                    <a href="#" onclick="logout(); return false;" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        <i class="fas fa-sign-out-alt mr-2"></i> Log Out
-                                    </a>
-                                </div>
-                            </div>
+                        <div class="flex items-center space-x-3">
+                            <a href="https://laravel-car.orbit-node.com/login" class="border-2 border-black bg-transparent hover:bg-black text-black hover:text-white px-4 py-2 rounded-lg transition font-semibold">
+                                <i class="fas fa-sign-in-alt mr-2"></i>Login
+                            </a>
+                            <a href="https://laravel-car.orbit-node.com/register" class="border-2 border-black bg-transparent hover:bg-black text-black hover:text-white px-4 py-2 rounded-lg transition font-semibold">
+                                <i class="fas fa-user-plus mr-2"></i>Register
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -228,7 +198,7 @@
                             <i class="fas fa-bolt mr-2"></i>Quick Actions
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <a href="vehicles.html" class="flex items-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition">
+                            <a href="https://laravel-car.orbit-node.com/customer/vehicles" class="flex items-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition">
                                 <i class="fas fa-plus-circle text-2xl text-blue-600 mr-3"></i>
                                 <div>
                                     <p class="font-semibold text-gray-900">Add Vehicle</p>
@@ -242,7 +212,7 @@
                                     <p class="text-sm text-gray-600">Schedule maintenance</p>
                                 </div>
                             </a>
-                            <a href="appointments.html" class="flex items-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition">
+                            <a href="https://laravel-car.orbit-node.com/customer/appointments" class="flex items-center p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition">
                                 <i class="fas fa-list text-2xl text-purple-600 mr-3"></i>
                                 <div>
                                     <p class="font-semibold text-gray-900">View Appointments</p>
@@ -257,186 +227,34 @@
     </div>
 
     <script>
+        function getPortalBaseUrl() {
+            return 'https://laravel-car.orbit-node.com';
+        }
+
         // Configuration: API Base URL
         function getApiUrl() {
             return 'https://laravel-car.orbit-node.com/api';
         }
 
-
-        function loadDashboardData() {
-            // Note: These endpoints would need to be created in the backend
-            // For now, we'll use localStorage to store and retrieve data from booking
-            
-            // Load from localStorage if available
-            const storedAppointments = localStorage.getItem('appointments');
-            const storedVehicles = localStorage.getItem('vehicles');
-            
-            if (storedAppointments) {
-                try {
-                    const appointments = JSON.parse(storedAppointments);
-                    updateAppointmentsStats(appointments);
-                    renderRecentAppointments(appointments.slice(0, 5));
-                } catch(e) {
-                    console.error('Error parsing appointments:', e);
-                }
-            } else {
-                renderRecentAppointments([]);
-            }
-            
-            if (storedVehicles) {
-                try {
-                    const vehicles = JSON.parse(storedVehicles);
-                    updateVehiclesStats(vehicles);
-                    renderRecentVehicles(vehicles.slice(0, 5));
-                } catch(e) {
-                    console.error('Error parsing vehicles:', e);
-                }
-            } else {
-                renderRecentVehicles([]);
-            }
-        }
-
-        function updateAppointmentsStats(appointments) {
-            $('#stats-appointments').text(appointments.length);
-            
-            const pending = appointments.filter(a => a.status === 'pending').length;
-            const upcoming = appointments.filter(a => {
-                const date = new Date(a.appointment_date);
-                return date >= new Date() && a.status !== 'cancelled' && a.status !== 'completed';
-            }).length;
-            
-            $('#stats-pending').text(pending);
-            $('#stats-upcoming').text(upcoming);
-        }
-
-        function updateVehiclesStats(vehicles) {
-            $('#stats-vehicles').text(vehicles.length);
-        }
-
-        function renderRecentAppointments(appointments) {
-            const container = $('#recent-appointments');
-            
-            if (appointments.length === 0) {
-                container.html(`
-                    <p class="text-gray-500 text-center py-4">No appointments yet.</p>
-                    <a href="booking.html" class="block text-center text-blue-600 hover:text-blue-800 font-medium">
-                        Book Your First Appointment <i class="fas fa-arrow-right ml-1"></i>
-                    </a>
-                `);
-                return;
-            }
-            
-            let html = '<div class="space-y-4">';
-            appointments.forEach(apt => {
-                const date = new Date(apt.appointment_date);
-                const statusClass = {
-                    'pending': 'bg-yellow-100 text-yellow-800',
-                    'confirmed': 'bg-blue-100 text-blue-800',
-                    'completed': 'bg-green-100 text-green-800',
-                    'cancelled': 'bg-red-100 text-red-800'
-                }[apt.status] || 'bg-gray-100 text-gray-800';
-                
-                html += `
-                    <div class="border-l-4 border-blue-500 pl-4 py-2">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="font-medium text-gray-900">${apt.vehicle_make} ${apt.vehicle_model}</p>
-                                <p class="text-sm text-gray-600">
-                                    <i class="fas fa-calendar mr-1"></i>
-                                    ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' })}
-                                </p>
-                                <p class="text-sm text-gray-600">
-                                    <i class="fas fa-wrench mr-1"></i>
-                                    ${apt.services ? apt.services.map(s => s.name).join(', ') : 'Services'}
-                                </p>
-                            </div>
-                            <span class="px-2 py-1 text-xs font-semibold rounded-full ${statusClass}">
-                                ${apt.status ? apt.status.charAt(0).toUpperCase() + apt.status.slice(1) : 'Pending'}
-                            </span>
-                        </div>
-                    </div>
-                `;
-            });
-            html += '</div>';
-            html += `
-                <div class="mt-4">
-                    <a href="appointments.html" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                        View All Appointments <i class="fas fa-arrow-right ml-1"></i>
-                    </a>
-                </div>
-            `;
-            container.html(html);
-        }
-
-        function renderRecentVehicles(vehicles) {
-            const container = $('#recent-vehicles');
-            
-            if (vehicles.length === 0) {
-                container.html(`
-                    <p class="text-gray-500 text-center py-4">No vehicles registered yet.</p>
-                    <a href="vehicles.html" class="block text-center text-blue-600 hover:text-blue-800 font-medium">
-                        Add Your First Vehicle <i class="fas fa-arrow-right ml-1"></i>
-                    </a>
-                `);
-                return;
-            }
-            
-            let html = '<div class="space-y-4">';
-            vehicles.forEach(vehicle => {
-                html += `
-                    <div class="border rounded-lg p-4 hover:bg-gray-50 transition">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="font-semibold text-gray-900">${vehicle.make} ${vehicle.model} ${vehicle.year}</p>
-                                <p class="text-sm text-gray-600">
-                                    <i class="fas fa-id-card mr-1"></i>${vehicle.license_plate}
-                                </p>
-                                ${vehicle.mileage ? `
-                                    <p class="text-sm text-gray-600">
-                                        <i class="fas fa-tachometer-alt mr-1"></i>${vehicle.mileage.toLocaleString()} miles
-                                    </p>
-                                ` : ''}
-                            </div>
-                            <a href="vehicles.html" class="text-blue-600 hover:text-blue-800">
-                                <i class="fas fa-eye"></i>
-                            </a>
-                        </div>
-                    </div>
-                `;
-            });
-            html += '</div>';
-            html += `
-                <div class="mt-4">
-                    <a href="vehicles.html" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                        View All Vehicles <i class="fas fa-arrow-right ml-1"></i>
-                    </a>
-                </div>
-            `;
-            container.html(html);
-        }
-
-        // Check authentication status
-        function checkAuth() {
-            const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-            if (currentUser) {
-                $('#not-logged-in').addClass('hidden');
-                $('#logged-in').removeClass('hidden');
-                $('#user-name-nav').text(currentUser.name || currentUser.username || 'User');
-            } else {
-                $('#not-logged-in').removeClass('hidden');
-                $('#logged-in').addClass('hidden');
-            }
-        }
-
-        function logout() {
-            localStorage.removeItem('currentUser');
-            window.location.reload();
-        }
-
-        // Check auth on page load
         $(document).ready(function() {
-            loadDashboardData();
-            checkAuth();
+            $('#stats-vehicles').text('—');
+            $('#stats-appointments').text('—');
+            $('#stats-pending').text('—');
+            $('#stats-upcoming').text('—');
+
+            $('#recent-appointments').html(`
+                <p class="text-gray-600 text-center py-4">Appointments are available in the Customer Portal.</p>
+                <a href="${getPortalBaseUrl()}/customer/appointments" class="block text-center text-blue-600 hover:text-blue-800 font-medium">
+                    Open Customer Portal <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            `);
+
+            $('#recent-vehicles').html(`
+                <p class="text-gray-600 text-center py-4">Vehicles are available in the Customer Portal.</p>
+                <a href="${getPortalBaseUrl()}/customer/vehicles" class="block text-center text-blue-600 hover:text-blue-800 font-medium">
+                    Open Customer Portal <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            `);
         });
     </script>
 </body>

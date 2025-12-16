@@ -137,7 +137,7 @@
                             </label>
                         </div>
                         <a 
-                            href="forgot-password.html" 
+                            href="https://laravel-car.orbit-node.com/forgot-password" 
                             class="text-sm text-blue-600 hover:text-blue-800 hover:underline transition"
                         >
                             Forgot password?
@@ -147,7 +147,8 @@
                     <!-- Submit Button -->
                     <div>
                         <button 
-                            type="submit" 
+                            type="button" 
+                            onclick="redirectToPortalLogin()"
                             class="w-full border-2 border-black bg-transparent hover:bg-black text-black hover:text-white font-semibold py-3 px-4 rounded-lg transition duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                         >
                             <i class="fas fa-sign-in-alt mr-2"></i>Sign In
@@ -159,7 +160,7 @@
                 <div class="mt-6 text-center">
                     <p class="text-sm text-gray-600">
                         Don't have an account?
-                        <a href="register.html" class="text-blue-600 hover:text-blue-800 font-medium hover:underline">
+                        <a href="https://laravel-car.orbit-node.com/register" class="text-blue-600 hover:text-blue-800 font-medium hover:underline">
                             Create one here
                         </a>
                     </p>
@@ -174,6 +175,10 @@
     </div>
 
     <script>
+        function getPortalBaseUrl() {
+            return 'https://laravel-car.orbit-node.com';
+        }
+
         // Configuration: API Base URL
         function getApiUrl() {
             return 'https://laravel-car.orbit-node.com/api';
@@ -219,36 +224,12 @@
             $('#alert-container').html(alertHtml);
         }
 
-        // Handle form submission
-        $('#login-form').on('submit', function(e) {
-            e.preventDefault();
-            
-            const username = $('#username').val();
-            const password = $('#password').val();
-            const remember = $('#remember_me').is(':checked');
-            
-            // Clear previous errors
-            $('#username-error').addClass('hidden');
-            $('#password-error').addClass('hidden');
-            
-            // Note: This would require authentication API endpoints
-            // For now, we'll use localStorage to simulate login
-            // In production, this would call: POST /api/login
-            
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
-            const user = users.find(u => u.username === username && u.password === password);
-            
-            if (user) {
-                // Store logged in user
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                showAlert('success', 'Login successful! Redirecting...');
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1000);
-            } else {
-                showAlert('error', 'Invalid username or password.');
-            }
-        });
+        function redirectToPortalLogin() {
+            showAlert('success', 'Redirecting to secure login...');
+            setTimeout(() => {
+                window.location.href = `${getPortalBaseUrl()}/login`;
+            }, 300);
+        }
     </script>
 </body>
 </html>
